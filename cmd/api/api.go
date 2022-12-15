@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"myapp/internal/driver"
+	"myapp/internal/models"
 	"net/http"
 	"os"
 	"time"
@@ -33,6 +35,7 @@ type application struct {
 	infoLog  *log.Logger
 	errorLog *log.Logger
 	version  string
+	db 		 models.DBModel
 }
 
 func (app *application) serve() error {
@@ -55,23 +58,35 @@ func main() {
 
 	flag.IntVar(&cfg.port, "port", 4001, "Server port to listen on")
 	flag.StringVar(&cfg.env, "env", "development", "Application enviornment {development|production|maintenance}")
-
+	connStr := "user=postgres dbname=widgets password=Matwyenko1_ host=localhost sslmode=disable"
+	fmt.Println(connStr)
 	flag.Parse()
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
 
 	cfg.stripe.key = key
 	cfg.stripe.secret = secret
 	
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	conn, err := driver.OpenDb(connStr)
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	defer conn.Close()
+
+	// infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	// errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	app := &application{
 		config:   cfg,
 		infoLog:  infoLog,
 		errorLog: errorLog,
 		version:  version,
+		db: models.DBModel{DB: conn},
 	}
 
-	err := app.serve()
+	err = app.serve()
 	if err != nil {
 		log.Fatal(err)
 	}

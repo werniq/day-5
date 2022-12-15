@@ -22,7 +22,9 @@ type templateData struct {
 	CSSVersion      string
 }
 
-var functions = template.FuncMap{}
+var functions = template.FuncMap{
+	"formatCurrency": formatCurrency,
+}
 
 //go:embed templates
 var templateFS embed.FS
@@ -87,4 +89,10 @@ func (app *application) parseTemplate(partials []string, page, templateToRender 
 
 	app.templateCache[templateToRender] = t
 	return t, nil
+}
+
+
+func formatCurrency(n int) string {
+	f := float32(n / 100)
+	return fmt.Sprintf("$%.2f", f)
 }
