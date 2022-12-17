@@ -28,7 +28,7 @@ func (c *Card) CreatePaymentIntent(currency string, amount int) (*stripe.Payment
 
 	// create a payment intent
 	params := &stripe.PaymentIntentParams{
-		Amount: stripe.Int64(int64(amount)),
+		Amount:   stripe.Int64(int64(amount)),
 		Currency: stripe.String(currency),
 	}
 

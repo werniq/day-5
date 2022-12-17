@@ -35,7 +35,7 @@ type application struct {
 	infoLog  *log.Logger
 	errorLog *log.Logger
 	version  string
-	db 		 models.DBModel
+	db       models.DBModel
 }
 
 func (app *application) serve() error {
@@ -65,10 +65,9 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-
 	cfg.stripe.key = key
 	cfg.stripe.secret = secret
-	
+
 	conn, err := driver.OpenDb(connStr)
 	if err != nil {
 		errorLog.Fatal(err)
@@ -83,7 +82,7 @@ func main() {
 		infoLog:  infoLog,
 		errorLog: errorLog,
 		version:  version,
-		db: models.DBModel{DB: conn},
+		db:       models.DBModel{DB: conn},
 	}
 
 	err = app.serve()

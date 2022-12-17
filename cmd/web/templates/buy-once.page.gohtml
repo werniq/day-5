@@ -104,7 +104,8 @@
         form.classList.add("was-validated");
         hidePayButton();
 
-        let amountToCharge = String(parseFloat(document.getElementById("amount").value) * 100)
+        // Fixed issue with payment(price was $10.00, but in stripe payments was charging $1000.00)
+        let amountToCharge = document.getElementById("amount").value;
         
         let payload = {
             amount: amountToCharge,

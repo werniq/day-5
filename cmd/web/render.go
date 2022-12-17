@@ -29,7 +29,6 @@ var functions = template.FuncMap{
 //go:embed templates
 var templateFS embed.FS
 
-
 func (app *application) addDefaultData(td *templateData, r *http.Request) *templateData {
 	return td
 }
@@ -69,7 +68,7 @@ func (app *application) renderTemplate(w http.ResponseWriter, r *http.Request, p
 func (app *application) parseTemplate(partials []string, page, templateToRender string) (*template.Template, error) {
 	var t *template.Template
 	var err error
-	
+
 	// build partials
 	if len(partials) > 0 {
 		for i, x := range partials {
@@ -90,7 +89,6 @@ func (app *application) parseTemplate(partials []string, page, templateToRender 
 	app.templateCache[templateToRender] = t
 	return t, nil
 }
-
 
 func formatCurrency(n int) string {
 	f := float32(n / 100)

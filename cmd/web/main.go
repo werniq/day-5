@@ -15,7 +15,6 @@ import (
 const version = "1.0.0"
 const cssVersion = "1"
 
-
 type config struct {
 	port int
 	env  string
@@ -35,7 +34,7 @@ type application struct {
 	errorLog      *log.Logger
 	templateCache map[string]*template.Template
 	version       string
-	db 			  models.DBModel
+	db            models.DBModel
 }
 
 func (app *application) serve() error {
@@ -95,7 +94,7 @@ func main() {
 		errorLog:      errorLog,
 		templateCache: tc,
 		version:       version,
-		db: 		   models.DBModel{DB: conn},
+		db:            models.DBModel{DB: conn},
 	}
 
 	err = app.serve()
