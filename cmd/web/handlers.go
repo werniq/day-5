@@ -1,6 +1,7 @@
 package main
 
 import (
+	"myapp/internal/cards"
 	"net/http"
 	"strconv"
 
@@ -28,6 +29,27 @@ func (app *application) succededPayment(w http.ResponseWriter, r *http.Request) 
 	paymentAmount := r.Form.Get("payment_amount")
 	Currency := r.Form.Get("payment_currency")
 
+	card := cards.Card(
+		Secret: app.config.stripe.secret,
+		Key: app.config.stripe.key,
+	)
+
+	pi, err := Card.RetrievePaymentIntent(paymentIntent)
+	if err != nil {
+		app.errorLog.Println(err)
+		return
+	}
+
+	pm, err := Card.GetPaymentMethod(paymentMethod)
+	if err != nil {
+		app.errorLog.Println(err)
+		return
+	}
+
+	lastFour := pm.Card.LastFour
+	expiryMonth := pm.Card.expiryMonth
+	expiryYear := pm.Card.expiryYear
+
 	data := make(map[string]interface{})
 	data["cardholder"] = cardHolder
 	data["email"] = email
@@ -35,6 +57,10 @@ func (app *application) succededPayment(w http.ResponseWriter, r *http.Request) 
 	data["payment_method"] = paymentMethod
 	data["payment_amount"] = paymentAmount
 	data["Currency"] = Currency
+	data["last_four"] = lastFour
+	data["exp_month"] = expiryMonth
+	data["exp_year"] = expiryYear
+	data["bank_return_code"] = pi.Charge.Data[0].ID 
 
 	// should write this data tp session, and then redirect user to new page
 

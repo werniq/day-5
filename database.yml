@@ -1,6 +1,6 @@
 development:
   dialect: postgres
-  database: spinners
+  database: widget-spinners
   user: postgres
   password: Matwyenko1_
   host: 127.0.0.1

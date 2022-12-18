@@ -1,4 +1,0 @@
-create_table("txes") {
-	t.Column("id", "uuid", {primary: true})
-	t.Timestamps()
-}

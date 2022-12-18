@@ -1,5 +1,0 @@
-create_table("tx_statuses") {
-	t.Column("id", "uuid", {primary: true})
-	t.Column("tx", "string", {})
-	t.Timestamps()
-}
