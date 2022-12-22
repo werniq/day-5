@@ -14,8 +14,8 @@ import (
 const version = "1.0.0"
 
 var (
-	secret = "sk_test_51MDNwED30VXs575FnedKXj2RpNqvnmfzWmY8UvaZeWhI9ASpAdjo95c5u4ldldXuK5mnQPwJcUIguDlrYxA0W3CN00Rj4w65q3"
-	key    = "pk_test_51MDNwED30VXs575FRCsI1ptKlwKSVAQpoTw45tc0ZnPIXFBznUedrTjyspzOxEzvfsr600h5qIyOhMlK4K83i643000feK1Rnm"
+	secret = os.Getenv("stripe-secret")
+	key    = os.Getenv("stripe-key")
 )
 
 type config struct {
